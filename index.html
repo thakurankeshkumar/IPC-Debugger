@@ -8,7 +8,17 @@
 </head>
 
 <body>
-    
+    <button onclick="createProcess()">Create Process</button>
+
+    <input id="from" placeholder="From P#" />
+    <input id="to" placeholder="To P#" />
+    <input id="msg" placeholder="Message" />
+
+    <button onclick="handleSend()">Send Message</button>
+
+    <div id="logs"></div>
+    <script src="script.js"></script>
+    <script src="ipc.js"></script>
 </body>
 
 </html>
