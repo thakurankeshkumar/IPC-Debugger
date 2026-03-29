@@ -4,140 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPC Debugger | Inter-Process Communication System</title>
-    <link rel="stylesheet" href="style.css">
+    <title>IPC | Inter Process Communication Debugger</title>
 </head>
 
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <h1>🔗 IPC Debugger</h1>
-                <p>Inter-Process Communication Simulator & Analyzer</p>
-            </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-label">Processes:</span>
-                    <span class="stat-value" id="processCount">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Messages:</span>
-                    <span class="stat-value" id="messageCount">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Status:</span>
-                    <span class="stat-value" id="statusIndicator">Ready</span>
-                </div>
-            </div>
-        </header>
+    <button onclick="createProcess()">Create Process</button>
 
-        <div class="main-layout">
-            <!-- Left Panel: Controls -->
-            <aside class="control-panel">
-                <section class="card">
-                    <h2>Process Management</h2>
-                    <button class="btn btn-primary" onclick="createProcess()">
-                        <span class="icon">➕</span> Create Process
-                    </button>
-                    <button class="btn btn-secondary" onclick="terminateLastProcess()">
-                        <span class="icon">🗑️</span> Terminate Last
-                    </button>
-                    <button class="btn btn-danger" onclick="clearAll()">
-                        <span class="icon">💣</span> Clear All
-                    </button>
-                </section>
+    <input id="from" placeholder="From P#" />
+    <input id="to" placeholder="To P#" />
+    <input id="msg" placeholder="Message" />
 
-                <section class="card">
-                    <h2>Send Message</h2>
-                    <div class="form-group">
-                        <label for="from">From Process:</label>
-                        <input id="from" type="number" placeholder="e.g., 1" min="1" />
-                    </div>
-                    <div class="form-group">
-                        <label for="to">To Process:</label>
-                        <input id="to" type="number" placeholder="e.g., 2" min="1" />
-                    </div>
-                    <div class="form-group">
-                        <label for="msg">Message:</label>
-                        <input id="msg" type="text" placeholder="Enter message..." />
-                    </div>
-                    <button class="btn btn-success" onclick="handleSend()">
-                        <span class="icon">📤</span> Send Message
-                    </button>
-                </section>
+    <button onclick="handleSend()">Send Message</button>
 
-                <section class="card">
-                    <h2>Simulation Settings</h2>
-                    <div class="form-group">
-                        <label>Queue Limit:</label>
-                        <input id="queueLimit" type="number" value="5" min="1" />
-                    </div>
-                    <div class="form-group">
-                        <label>
-                            <input type="checkbox" id="autoDetect" checked />
-                            Auto-detect Deadlocks
-                        </label>
-                    </div>
-                </section>
-            </aside>
-
-            <!-- Center Panel: Process Visualization -->
-            <main class="visualization">
-                <section class="card">
-                    <h2>Process Network</h2>
-                    <div id="processContainer" class="process-grid">
-                        <div class="empty-state">
-                            <p>No processes yet. Click "Create Process" to start.</p>
-                        </div>
-                    </div>
-                </section>
-            </main>
-
-            <!-- Right Panel: Logs and Alerts -->
-            <aside class="info-panel">
-                <section class="card">
-                    <div class="tabs">
-                        <button class="tab-btn active" onclick="switchTab('logs')">📋 Logs</button>
-                        <button class="tab-btn" onclick="switchTab('alerts')">⚠️ Alerts</button>
-                        <button class="tab-btn" onclick="switchTab('info')">ℹ️ Info</button>
-                    </div>
-
-                    <div id="logs-tab" class="tab-content active">
-                        <div id="logs" class="logs-container"></div>
-                        <button class="btn btn-small" onclick="clearLogs()">Clear Logs</button>
-                    </div>
-
-                    <div id="alerts-tab" class="tab-content">
-                        <div id="alerts" class="alerts-container">
-                            <p class="empty">No alerts yet</p>
-                        </div>
-                    </div>
-
-                    <div id="info-tab" class="tab-content">
-                        <div class="info-content">
-                            <h3>IPC Methods Simulated:</h3>
-                            <ul>
-                                <li><strong>Message Queue:</strong> Primary method</li>
-                                <li><strong>Deadlock Detection:</strong> Real-time</li>
-                                <li><strong>Queue Monitoring:</strong> Visual feedback</li>
-                            </ul>
-                            <h3>Legend:</h3>
-                            <ul>
-                                <li><span class="badge badge-idle">Idle</span> Process waiting</li>
-                                <li><span class="badge badge-busy">Busy</span> Processing message</li>
-                                <li><span class="badge badge-blocked">Blocked</span> Overloaded</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-            </aside>
-        </div>
-    </div>
-
-    <script src="ipc.js"></script>
-    <script src="debuggers.js"></script>
+    <div id="logs"></div>
     <script src="script.js"></script>
+    <script src="ipc.js"></script>
 </body>
 
 </html>
