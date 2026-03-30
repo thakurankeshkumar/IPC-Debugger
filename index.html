@@ -4,30 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPC Debugger | Inter-Process Communication System</title>
+    <title>🔗 IPC Debugger - Advanced Inter-Process Communication</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <div class="stars-background"></div>
     <div class="container">
         <!-- Header -->
         <header class="header">
             <div class="header-content">
                 <h1>🔗 IPC Debugger</h1>
-                <p>Inter-Process Communication Simulator & Analyzer</p>
+                <p>Advanced Inter-Process Communication Simulator with Real-Time Deadlock Detection</p>
             </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-label">Processes:</span>
-                    <span class="stat-value" id="processCount">0</span>
+            <div class="header-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">⚙️</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Active Processes</span>
+                        <span class="stat-value" id="processCount">0</span>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-label">Messages:</span>
-                    <span class="stat-value" id="messageCount">0</span>
+                <div class="stat-card">
+                    <div class="stat-icon">📨</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Total Messages</span>
+                        <span class="stat-value" id="messageCount">0</span>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-label">Status:</span>
-                    <span class="stat-value" id="statusIndicator">Ready</span>
+                <div class="stat-card">
+                    <div class="stat-icon" id="statusIcon">✅</div>
+                    <div class="stat-info">
+                        <span class="stat-label">System Status</span>
+                        <span class="stat-value" id="statusText">Ready</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Queue Utilization</span>
+                        <span class="stat-value" id="queueUtil">0%</span>
+                    </div>
                 </div>
             </div>
         </header>
@@ -36,103 +53,146 @@
             <!-- Left Panel: Controls -->
             <aside class="control-panel">
                 <section class="card">
-                    <h2>Process Management</h2>
-                    <button class="btn btn-primary" onclick="createProcess()">
-                        <span class="icon">➕</span> Create Process
+                    <h3 class="card-title">⚙️ Process Control</h3>
+                    <button class="btn btn-primary glow" onclick="createProcess()">
+                        ➕ Create Process
                     </button>
-                    <button class="btn btn-secondary" onclick="terminateLastProcess()">
-                        <span class="icon">🗑️</span> Terminate Last
+                    <button class="btn btn-secondary" onclick="createRandomProcess()">
+                        🎲 Random Process
                     </button>
                     <button class="btn btn-danger" onclick="clearAll()">
-                        <span class="icon">💣</span> Clear All
+                        🗑️ Clear All
                     </button>
                 </section>
 
                 <section class="card">
-                    <h2>Send Message</h2>
+                    <h3 class="card-title">📤 Message Transmission</h3>
                     <div class="form-group">
-                        <label for="from">From Process:</label>
-                        <input id="from" type="number" placeholder="e.g., 1" min="1" />
+                        <label>From (Process #):</label>
+                        <input id="from" type="number" placeholder="From process..." min="1" />
                     </div>
                     <div class="form-group">
-                        <label for="to">To Process:</label>
-                        <input id="to" type="number" placeholder="e.g., 2" min="1" />
+                        <label>To (Process #):</label>
+                        <input id="to" type="number" placeholder="To process..." min="1" />
                     </div>
                     <div class="form-group">
-                        <label for="msg">Message:</label>
-                        <input id="msg" type="text" placeholder="Enter message..." />
+                        <label>Message Content:</label>
+                        <textarea id="msg" placeholder="Enter message..." maxlength="50"></textarea>
+                        <small id="charCount">0/50</small>
                     </div>
-                    <button class="btn btn-success" onclick="handleSend()">
-                        <span class="icon">📤</span> Send Message
+                    <button class="btn btn-success glow" onclick="handleSend()">
+                        🚀 Send Message
                     </button>
                 </section>
 
                 <section class="card">
-                    <h2>Simulation Settings</h2>
+                    <h3 class="card-title">⚙️ Simulation Settings</h3>
                     <div class="form-group">
-                        <label>Queue Limit:</label>
-                        <input id="queueLimit" type="number" value="5" min="1" />
+                        <label>Queue Size Limit:</label>
+                        <input id="queueLimit" type="number" value="5" min="1" max="20" />
+                        <input type="range" id="queueLimitSlider" min="1" max="20" value="5" oninput="updateQueueLimit(this.value)" />
                     </div>
                     <div class="form-group">
                         <label>
                             <input type="checkbox" id="autoDetect" checked />
-                            Auto-detect Deadlocks
+                            🔍 Auto-Detect Deadlocks
                         </label>
                     </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="visualEffects" checked />
+                            ✨ Enable Animations
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Speed:</label>
+                        <input type="range" id="speed" min="0.5" max="2" value="1" step="0.1" />
+                        <span id="speedValue">1x</span>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h3 class="card-title">📚 Quick Actions</h3>
+                    <button class="btn btn-info" onclick="simulateLoad()">
+                        📊 Simulate Load
+                    </button>
+                    <button class="btn btn-warning" onclick="testDeadlock()">
+                        ⚠️ Test Deadlock
+                    </button>
                 </section>
             </aside>
 
-            <!-- Center Panel: Process Visualization -->
+            <!-- Center: Visualization Area -->
             <main class="visualization">
                 <section class="card">
-                    <h2>Process Network</h2>
+                    <h3 class="card-title">📡 Real-Time Network Visualization</h3>
+                    <div class="canvas-container">
+                        <canvas id="networkCanvas" width="900" height="400"></canvas>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h3 class="card-title">🔄 Active Processes</h3>
                     <div id="processContainer" class="process-grid">
                         <div class="empty-state">
-                            <p>No processes yet. Click "Create Process" to start.</p>
+                            <div class="empty-icon">⚡</div>
+                            <p>No processes created yet</p>
+                            <small>Click "Create Process" to begin</small>
                         </div>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h3 class="card-title">📈 Message Flow Timeline</h3>
+                    <div id="timeline" class="timeline">
+                        <p class="timeline-empty">Waiting for messages...</p>
                     </div>
                 </section>
             </main>
 
-            <!-- Right Panel: Logs and Alerts -->
+            <!-- Right Info Panel -->
             <aside class="info-panel">
                 <section class="card">
-                    <div class="tabs">
-                        <button class="tab-btn active" onclick="switchTab('logs')">📋 Logs</button>
-                        <button class="tab-btn" onclick="switchTab('alerts')">⚠️ Alerts</button>
-                        <button class="tab-btn" onclick="switchTab('info')">ℹ️ Info</button>
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="switchTab(event, 'logs')">📋 Logs</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'alerts')">⚠️ Alerts</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'analysis')">📊 Analysis</button>
                     </div>
 
-                    <div id="logs-tab" class="tab-content active">
-                        <div id="logs" class="logs-container"></div>
+                    <!-- Logs Tab -->
+                    <div id="logs-panel" class="tab-panel active">
+                        <div class="logs-box">
+                            <div id="logsDisplay" class="logs-content"></div>
+                        </div>
                         <button class="btn btn-small" onclick="clearLogs()">Clear Logs</button>
                     </div>
 
-                    <div id="alerts-tab" class="tab-content">
-                        <div id="alerts" class="alerts-container">
-                            <p class="empty">No alerts yet</p>
+                    <!-- Alerts Tab -->
+                    <div id="alerts-panel" class="tab-panel">
+                        <div class="alerts-box">
+                            <div id="alertsDisplay" class="alerts-content">
+                                <p class="empty">No alerts</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div id="info-tab" class="tab-content">
-                        <div class="info-content">
-                            <h3>IPC Methods Simulated:</h3>
-                            <ul>
-                                <li><strong>Message Queue:</strong> Primary method</li>
-                                <li><strong>Deadlock Detection:</strong> Real-time</li>
-                                <li><strong>Queue Monitoring:</strong> Visual feedback</li>
-                            </ul>
-                            <h3>Legend:</h3>
-                            <ul>
-                                <li><span class="badge badge-idle">Idle</span> Process waiting</li>
-                                <li><span class="badge badge-busy">Busy</span> Processing message</li>
-                                <li><span class="badge badge-blocked">Blocked</span> Overloaded</li>
-                            </ul>
+                    <!-- Analysis Tab -->
+                    <div id="analysis-panel" class="tab-panel">
+                        <div class="analysis-box">
+                            <div id="analysisDisplay" class="analysis-content">
+                                <p class="empty">Create processes to analyze</p>
+                            </div>
                         </div>
                     </div>
                 </section>
             </aside>
         </div>
+    </div>
+
+    <!-- Deadlock Notification -->
+    <div id="deadlockNotification" class="deadlock-notification hidden">
+        <span class="deadlock-icon">⚠️</span>
+        <span class="deadlock-text">DEADLOCK DETECTED!</span>
     </div>
 
     <script src="ipc.js"></script>
